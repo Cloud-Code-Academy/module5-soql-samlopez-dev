@@ -52,9 +52,15 @@ public with sharing class SOQL {
      * @return A list of Contact Ids.
      * Update the corresponding test class and testGetContactIdsByLastName method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+     public static List<Id> getContactsByLastName(){
+      List<Contact> contactsByLastName = [SELECT Id FROM Contact WHERE LastName IN ('Smith', 'Jones')];
+      List<Id> contactIds = new List<Id>();
+      for(Contact currentContact : contactsByLastName){
+        Id contactId = currentContact.Id;
+        contactIds.add(contactId);
+      }
+      return contactIds;
+    }
 
     /**
      * Question 4
