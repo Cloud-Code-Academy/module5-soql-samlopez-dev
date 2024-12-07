@@ -124,7 +124,8 @@ public with sharing class SOQL {
      * @return A list of Opportunity records.
      */
     public static List<Opportunity> getOpportunitiesByNameKeyword(String keyword) {
-        return null; // Replace null with the variable you used to store the result
+        List<Opportunity> opportunitiesByKeyword = [SELECT Id, Name, StageName, AccountId FROM Opportunity WHERE Name LIKE :('%' + keyword + '%')];
+        return opportunitiesByKeyword; // Replace null with the variable you used to store the result
     }
 
     /**
