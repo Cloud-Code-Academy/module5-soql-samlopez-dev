@@ -16,7 +16,7 @@
 * Users of this class can expect to gain a solid understanding of SOQL in Apex and
 * be prepared to handle data retrieval tasks in Salesforce development.
 * 
-* @author Your Name
+* @author Sam Lopez
 */
 
 public with sharing class SOQL {
@@ -28,9 +28,10 @@ public with sharing class SOQL {
      * @return List of all leads with Id, LastName, Company, Phone, Email
      * Update the corresponding test class and testGetAllLeads method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+    public static List<Lead> getAllLeads() {
+        List<Lead> allLeads = [SELECT Id, LastName, Company, Phone, Email FROM Lead];
+        return allLeads;
+    }
 
     /**
      * Question 2
@@ -39,9 +40,10 @@ public with sharing class SOQL {
      * @return A list of Contact records.
      * Update the corresponding test class and testGetContactsByFirstName method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+    public static List<Contact> getContactsNamedJohn(){
+     List<Contact> contactsNamedJohn = [SELECT Id, Name FROM Contact WHERE FirstName = 'John'];
+     return contactsNamedJohn;
+    }
 
     /**
      * Question 3
@@ -50,9 +52,15 @@ public with sharing class SOQL {
      * @return A list of Contact Ids.
      * Update the corresponding test class and testGetContactIdsByLastName method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+     public static List<Id> getContactsByLastName(){
+      List<Contact> contactsByLastName = [SELECT Id FROM Contact WHERE LastName IN ('Smith', 'Jones')];
+      List<Id> contactIds = new List<Id>();
+      for(Contact currentContact : contactsByLastName){
+        Id contactId = currentContact.Id;
+        contactIds.add(contactId);
+      }
+      return contactIds;
+    }
 
     /**
      * Question 4
@@ -63,9 +71,10 @@ public with sharing class SOQL {
      * @return A list of Opportunities with important opportunities fields
      * Update the corresponding test class and testGetClosedWonOpportunityCountByAccount method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+    public static List<Opportunity> getClosedWonOpportunitiesByAccount(String accountId) {
+        List<Opportunity> opportunitiesByAccount = [SELECT Id, Name, StageName, CloseDate, AccountId, Amount FROM Opportunity WHERE AccountId = :accountId AND StageName = 'Closed Won'];
+        return opportunitiesByAccount;
+    }
 
     /**
      * Question 5
@@ -74,9 +83,10 @@ public with sharing class SOQL {
      * @return The Integer count of Account records.
      * Update the corresponding test class and testGetAccountCount method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+    public static Integer getAccountCount() {
+     Integer accountCount = [SELECT COUNT() FROM Account];
+     return accountCount;
+    }
 
     /**
      * Question 6
@@ -85,9 +95,14 @@ public with sharing class SOQL {
      * @return A map of Task Ids to Task records.
      * Update the corresponding test class and testGetTasksDueNextWeek method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+    public static Map<Id, Task> getTasksDueNextWeek() {
+      List<Task> getTasksDueNextWeek = [SELECT Id, Subject, ActivityDate FROM Task WHERE ActivityDate >= TODAY AND ActivityDate <= :System.today().addDays(7)];
+      Map<Id, Task> tasksDueNextWeek = new Map<Id, Task>();
+      for(Task currentTask : getTasksDueNextWeek){
+        tasksDueNextWeek.put(currentTask.Id, currentTask);
+      }
+      return tasksDueNextWeek;
+    }
 
     /**
      * Question 7
@@ -96,9 +111,10 @@ public with sharing class SOQL {
      * @return A list of Contact records.
      * Update the corresponding test class and testGetContactsByEmailDomain method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+    public static List<Contact> getContactsByEmailDomain(){
+     List<Contact> contactsByEmailDomain = [SELECT Id, Name, Email FROM Contact WHERE Email LIKE '%example.com%'];
+     return contactsByEmailDomain;
+    }
 
     /**
      * Question 8
@@ -108,7 +124,8 @@ public with sharing class SOQL {
      * @return A list of Opportunity records.
      */
     public static List<Opportunity> getOpportunitiesByNameKeyword(String keyword) {
-        return null; // Replace null with the variable you used to store the result
+        List<Opportunity> opportunitiesByKeyword = [SELECT Id, Name, StageName, AccountId FROM Opportunity WHERE Name LIKE :('%' + keyword + '%')];
+        return opportunitiesByKeyword; // Replace null with the variable you used to store the result
     }
 
     /**
