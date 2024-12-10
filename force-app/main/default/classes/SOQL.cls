@@ -160,16 +160,14 @@ public with sharing class SOQL {
      * @return A list of Contact LastName.
      */
     public static List<String> getContactNamesByAccount(Id accountId) {
-        // Create a list to hold the Contact LastNames
+        List<String> contactNamesByAccount = new List<String>();
 
-        // Query the Contacts
-        // Loop through each Contact and add the LastName to the list
-        //for () {
-        //    
-        //}
-
+        List<Contact> allContacts = [SELECT Id, AccountId, Name FROM Contact WHERE AccountId = :accountId];
+        for (Contact currentContact : allContacts) {
+           contactNamesByAccount.add(currentContact.Name);
+        }
         // Return the list of Contact LastNames
-        return null; // Replace null with the variable you used to store the result
+        return contactNamesByAccount; // Replace null with the variable you used to store the result
     }
 
     /**
