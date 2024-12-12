@@ -323,9 +323,6 @@ public with sharing class SOQL {
                 emailDomains.add(domain);
             }
         }
-        if (emailDomains.isEmpty()) {
-            return new List<Account>();
-        } 
         // Query the Accounts
         List<Account> matchedDomainAccounts = [SELECT Id, Name, Website FROM Account WHERE Website IN :emailDomains];
         return matchedDomainAccounts; // Replace null with the variable you used to store the result
